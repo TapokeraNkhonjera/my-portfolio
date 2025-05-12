@@ -1,111 +1,175 @@
 <template>
-    <section class="header">
-      <div class="container">
-        <p class="label">About Me</p>
-        <h1>
-          Hi, I’m Tapokera Nkhonjera — a creative at heart and a developer by craft.
-        </h1>
-  
-        <!-- Introductory description -->
-        <p class="description">
-          I specialize in JavaScript and mobile development, building smooth, user-focused experiences across web and mobile.
-          But I’m more than just a programmer — I’m also a graphic designer and content creator driven by a passion for visual storytelling.
-        </p>
-  
-        <!-- Background and skill categories -->
-        <div class="skill-categories">
-          <div class="skill-category">
-            <h2>Development</h2>
-            <p class="description">
-              With a deep focus on JavaScript, TypeScript, and modern frameworks like Vue.js, I build seamless, scalable, and dynamic web applications. 
-              My work emphasizes user experience and efficient backend solutions, blending creative problem-solving with technical expertise.
-            </p>
-          </div>
-          <div class="skill-category">
-            <h2>Design</h2>
-            <p class="description">
-              I have a keen eye for visual design, with expertise in UI/UX design and tools like Adobe Photoshop, Illustrator, and Indesign. 
-              I specialize in creating aesthetically pleasing, user-centered designs that deliver impactful experiences, whether on the web or mobile.
-            </p>
-          </div>
-          <div class="skill-category">
-            <h2>Content Creation</h2>
-            <p class="description">
-              As a content creator, I capture stories through photography, videography, and editing. 
-              My creative process combines technical skills with a strong sense of visual storytelling, bringing ideas to life through multimedia content.
-            </p>
-          </div>
+  <section class="header">
+    <div class="container" ref="containerRef" :class="{ visible: visible }">
+      <p class="label">About Me</p>
+      <h1 class="headline">
+        I’m Tapokera Nkhonjera — a creative thinker and developer who builds expressive, functional digital experiences.
+      </h1>
+
+      <p class="description short">
+        Here's how I combine creativity and technology to deliver value across disciplines.
+      </p>
+
+      <div class="skill-categories">
+        <div
+          class="skill-category"
+          v-for="(card, index) in skills"
+          :key="index"
+        >
+          <p class="number">{{ index + 1 < 10 ? '0' + (index + 1) : index + 1 }}</p>
+          <h2>{{ card.title }}</h2>
+          <p>{{ card.text }}</p>
         </div>
       </div>
-    </section>
-  </template>
-  
-  <script setup>
+    </div>
+  </section>
+</template>
 
-  </script>
-  
-  <style scoped>
-  .header {
-    background-color: #ffffff;
-    color: #1a1a1a;
-    padding: 4rem 2rem;
-    font-family: 'Segoe UI', sans-serif;
+<script setup>
+import { ref, onMounted } from 'vue';
+
+const skills = [
+  {
+    title: "Development",
+    text: "I work with JavaScript, TypeScript, and modern frameworks like Vue.js to craft scalable, responsive apps. I blend UX thinking with technical rigor to bring ideas to life."
+  },
+  {
+    title: "Design",
+    text: "From UI/UX to brand visuals, I use tools like Adobe Photoshop, Illustrator, and Figma to shape cohesive, high-impact designs across digital media."
+  },
+  {
+    title: "Content",
+    text: "I tell stories through video, photography, and editing — blending design instincts with creator tools to make visually compelling media."
   }
-  
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    text-align: center;
+];
+
+const containerRef = ref(null);
+const visible = ref(false);
+
+onMounted(() => {
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      visible.value = entry.isIntersecting;
+    },
+    { threshold: 0.2 }
+  );
+
+  if (containerRef.value) observer.observe(containerRef.value);
+});
+</script>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
+.header {
+  background-color: #ffffff;
+  color: #1a1a1a;
+  padding: 6rem 2rem;
+  font-family: 'Inter', sans-serif;
+  text-align: center;
+}
+
+.container {
+  max-width: 950px;
+  margin: 0 auto;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.label {
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #f5332c;
+  margin-bottom: 1.5rem;
+}
+
+.headline {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.4;
+  color: #111;
+  margin-bottom: 1.5rem;
+}
+
+.description {
+  font-size: 1.05rem;
+  color: #444;
+  max-width: 700px;
+  margin: 0 auto 3rem auto;
+  line-height: 1.8;
+}
+
+.description.short {
+  max-width: 600px;
+  margin-top: -1rem;
+  margin-bottom: 3rem;
+  font-size: 0.95rem;
+  color: #666;
+}
+
+.skill-categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 3rem 4rem;
+  justify-content: center;
+  align-items: start;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.skill-category {
+  padding: 1rem;
+  border-top: 1px solid #ddd;
+}
+
+.skill-category .number {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #999;
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+}
+
+.skill-category h2 {
+  font-size: 1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  color: #000;
+}
+
+.skill-category p {
+  font-size: 0.9rem;
+  color: #444;
+  line-height: 1.6;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+@media (max-width: 480px) {
+  .headline {
+    font-size: 2rem;
   }
-  
-  .label {
-    color: #f5332c;
-    font-weight: bold;
-    font-size: 3.2rem;
-    margin-bottom: 1rem;
-    display: inline-block;
+
+  .description,
+  .description.short {
+    font-size: 0.95rem;
   }
-  
-  h1 {
-    font-size: 2.2rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    color: #111;
-  }
-  
-  .description {
-    font-size: 1rem;
-    line-height: 1.7;
-    margin-bottom: 1.2rem;
-    color: #444;
-    text-align: left;
-  }
-  
+
   .skill-categories {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
     gap: 2rem;
-    margin-top: 2rem;
   }
-  
-  .skill-category {
-    background-color: #f9f9f9; /* Subtle background color for each category */
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .skill-category h2 {
-    font-size: 1.5rem;
-    color: #f5332c;
-    margin-bottom: 1rem;
-    text-transform: uppercase;
-    font-weight: 600;
-  }
-  
+
   .skill-category p {
-    font-size: 1rem;
-    color: #333;
+    font-size: 0.9rem;
   }
-  </style>
-  av
+}
+</style>
