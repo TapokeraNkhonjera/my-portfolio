@@ -9,13 +9,12 @@ const routes = [
   { path: '/services', component: Services },
   { path: '/clients', component: Clients },
   { path: '/contact', component: Contact },
-  { path: '/:pathMatch(.*)*', redirect: '/' } // optional catch-all
+  { path: '/:pathMatch(.*)*', redirect: '/' }
 ]
 
 const router = createRouter({
-  history: createWebHistory('/my-portfolio/'), // <--- set your subfolder here
+  history: createWebHistory(),
   routes
 })
 
 export default router
-
